@@ -1,5 +1,6 @@
 #include <cassert>
 #include <algorithm>
+#include <vector>
 
 
 template<typename T>
@@ -11,6 +12,15 @@ class Matrix {
             allocate(height_, width_);
             for (size_t k = 0; k < std::min(height, width); k++) {
                 (*this)(k, k) = diag_;
+            }
+        }
+    
+        Matrix(const std::vector<std::vector<T>>& vec) {
+            allocate(vec.size(), vec[0].size());
+            for (size_t i = 0; i < vec.size(); i++) {
+                for (size_t j = 0; j < vec[i].size(); j++) {
+                    (*this)(i, j) = vec[i][j];
+                }
             }
         }
 
@@ -36,7 +46,7 @@ class Matrix {
             other.width = 0;
         }
 
-        Matrix& operator= (const Matrix& other) {
+        Matrix& operator=(const Matrix& other) {
             if (this != &other) {
                 assign(other.height, other.width);    
                 for (size_t i = 0; i < height; i++) {
@@ -48,7 +58,7 @@ class Matrix {
             return *this;
         }
 
-        Matrix& operator= (Matrix&& other) noexcept {
+        Matrix& operator=(Matrix&& other) noexcept {
             if (this != &other) {
                 deallocate();
                 height = other.height;
@@ -65,12 +75,12 @@ class Matrix {
             deallocate();
         }
 
-        T& operator() (const size_t row, const size_t col) noexcept {
+        T& operator()(const size_t row, const size_t col) noexcept {
             assert(row < rows() && col < cols() && "Index must be correct");
             return matrix[row * cols() + col];
         }
 
-        const T& operator() (const size_t row, const size_t col) const noexcept {
+        const T& operator()(const size_t row, const size_t col) const noexcept {
             assert(row < rows() && col < cols() && "Index must be correct");
             return matrix[row * cols() + col];
         }
@@ -114,20 +124,7 @@ class Matrix {
         }
 
         void toStairseCase() {
-            size_t ind = 0;
-            for (size_t i = 0; i < rows(); i++) {
-                for (size_t j = 0; j < cols(); j++) {
-                    if ((*this)(i, j) != 0) {
-                        if (j < ind) {
-                            bareissToStairseCase();
-                            return;
-                        }
-                        break;
-                    } else {
-                        ind = std::max(ind, j + 1);
-                    }
-                }
-            }
+            bareissToStairseCase();
         }
 
         int getDimKernel() const noexcept {
@@ -263,7 +260,7 @@ class Complex {
             complex = nullptr;
         }
 
-        Complex& operator= (const Complex& other) {
+        Complex& operator=(const Complex& other) {
             if (this != &other) {
                 assign(other.size());
                 for (size_t i = 0; i < other.size(); i++) {
@@ -273,7 +270,7 @@ class Complex {
             return *this;
         }
 
-        Complex& operator= (Complex&& other) {
+        Complex& operator=(Complex&& other) {
             if (this != &other) {
                 deallocate();
                 elems = other.size();
@@ -288,12 +285,12 @@ class Complex {
             deallocate();
         }
 
-        T& operator[] (const size_t ind) noexcept{
+        T& operator[](const size_t ind) noexcept{
             assert(ind < (*this).size() && "Index must be correct");
             return complex[ind];
         }
 
-        const T& operator[] (const size_t ind) const noexcept{
+        const T& operator[](const size_t ind) const noexcept{
             assert(ind < (*this).size() && "Index must be correct");
             return complex[ind];
         }
