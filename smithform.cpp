@@ -102,10 +102,8 @@ int main() {
     fmpz_mat_snf(Sa, A);
     fmpz_mat_snf(Sb, B);
 
-
     std::cout << solveHomology(Sa, Sb) << std::endl;
 
-    // 5. Очистка
     fmpz_mat_clear(A);
     fmpz_mat_clear(Sa);
     fmpz_mat_clear(B);
