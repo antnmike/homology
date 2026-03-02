@@ -1,50 +1,22 @@
-#include <iostream>
-#include "../hclass.cpp"
-
+#include "../chaincomplexz.cpp"
 
 int main() {
-    Matrix<int> c1 ({{5, 6}, {7, -8}});
-    Matrix<int> c2 ({{4, 3}, {-2, 9}});
-    Matrix<int> c3 = c1 * c2;
-
-    std::cout << "Matrixes: " << std::endl;
-
-    for (size_t i = 0; i < c1.rows(); i++) {
-        for (size_t j = 0; j < c1.cols(); j++) {
-            std::cout << c1(i, j) << " ";
+    size_t t;
+    std::cin >> t;
+    ChainComplex a;
+    a.resize(t);
+    for (size_t k = 0; k < t; k++) {
+        slong n, m;
+        std::cin >> n >> m;
+        fmpz_mat_init(a[k].mat, n, m);
+        for (slong i = 0; i < n; i++) {
+            for (slong j = 0; j < m; j++) {
+                slong x;
+                std::cin >> x;
+                fmpz_set_si(fmpz_mat_entry(a[k].mat, i, j), x);
+            }
         }
-        std::cout << std::endl;
     }
-
-    for (size_t i = 0; i < c2.rows(); i++) {
-        for (size_t j = 0; j < c2.cols(); j++) {
-            std::cout << c2(i, j) << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    std::cout << "Mul matrix:" << std::endl;
-    for (size_t i = 0; i < c3.rows(); i++) {
-        for (size_t j = 0; j < c3.cols(); j++) {
-            std::cout << c3(i, j) << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    std::cout << "Stairse case:" << std::endl;
-    c1.toStairseCase();
-    c2.toStairseCase();
-    for (size_t i = 0; i < c1.rows(); i++) {
-        for (size_t j = 0; j < c1.cols(); j++) {
-            std::cout << c1(i, j) << " ";
-        }
-        std::cout << std::endl;
-    }
-
-    for (size_t i = 0; i < c2.rows(); i++) {
-        for (size_t j = 0; j < c2.cols(); j++) {
-            std::cout << c2(i, j) << " ";
-        }
-        std::cout << std::endl;
-    }
+    std::cout << a.getHomology(1) << std::endl;
+    return 0;
 }
