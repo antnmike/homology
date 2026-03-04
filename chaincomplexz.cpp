@@ -144,7 +144,7 @@ struct ChainComplex {
 
         bool checkComplex() {
             for (size_t i = 1; i < comp.size(); i++) {
-                if (checkHomology(comp[i - 1], comp[i])) {
+                if (!checkHomology(comp[i - 1], comp[i])) {
                     return 0;
                 }
             }
